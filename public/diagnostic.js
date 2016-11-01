@@ -46,7 +46,8 @@ const Cart = Ember.Object.extend({
 
   addToCart(unitPrice, quantity){
     let orders = this.get('orders');
-    orders.push(Order.create({unitPrice: unitPrice, quantity: quantity}));
+    let newOrder = Order.create({unitPrice: unitPrice, quantity: quantity});
+    orders.push(newOrder);
   },
 
   totalPrice: Ember.computed('orders@each.orderPrice', function(){
