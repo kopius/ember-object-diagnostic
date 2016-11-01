@@ -23,3 +23,40 @@
 //  -  Order 1 : 2 hats ($5 each)
 //  -  Order 2 : 1 desk lamp ($20 each)
 //  -  Order 3 : 3 hand towels ($8 each)
+//
+// example:
+// const Bill = Ember.Object.extend({
+//   equalShare: Ember.computed('numPeople', 'totalCost', function(){
+//     return Number(this.totalCost / this.numPeople).toFixed(2);
+//   }),
+// });
+
+
+
+
+
+const Order = Ember.Object.extend({
+  orderPrice: Ember.computed('unitPrice', 'quantity', function(){
+    return ((this.unitPrice * this.quantity).toFixed(2));
+  })
+});
+
+const Cart = Ember.Object.extend({
+  orders: [],
+
+  addToCart(unitPrice, quantity){
+    let orders = this.get('orders');
+    orders.push(Order.create({unitPrice: unitPrice, quantity: quantity}));
+  },
+
+  totalPrice: Ember.computed('orders@each.orderPrice', function(){
+    let orders = this.get('orders');
+    let total = 0;
+    orders.forEach((order) => {total += order.orderPrice});
+    return total;
+  })
+});
+
+let myCart = Cart.create();
+myCart.get('addToCart')(5.00, 2);
+myCart.get('orderPrice');
